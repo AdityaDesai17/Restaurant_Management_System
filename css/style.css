@@ -1,0 +1,201 @@
+/*
+CHARLESTON GREEN : #2C2B30
+DARK LIVER : #4F4F51
+LIGHT GRAY : #D6D6D6
+ORCHID PINK : #F2C4CE
+TEA ROSE : #F58F7C
+
+font-family: 'Dancing Script', cursive;
+
+font-family: 'Open Sans', sans-serif;
+*/
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.covid-info {
+  background-color: #d6d6d6;
+}
+
+.covid-info a {
+  text-decoration: none;
+  color: #f58f7c;
+}
+.covid-info a:hover {
+  color: #c55642;
+}
+
+#mainNavbar {
+  background-color: #000000;
+}
+
+#mainNavbar .navbar-brand {
+  color: #f58f7c;
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+#mainNavbar .nav-link {
+  color: #f2c4ce;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+
+#mainNavbar .nav-link:hover {
+  color: #f58f7c;
+}
+
+#header {
+  background: url("../images/restaurant_background.jpg");
+  height: 754px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#header h1 {
+  color: #c55642;
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 5.5rem;
+}
+
+#header p {
+  color: #c55642;
+  font-family: "Dancing Script", cursive;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+#footer {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#footer h3 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+#footer li {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+#footer .form-group {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+}
+
+.btn {
+  background-color: #f58f7c;
+  color: #ffffff;
+}
+
+.btn:hover {
+  background-color: #c55642;
+  color: #ffffff;
+}
+
+#sub-header {
+  padding-top: 100px;
+  height: 240px;
+}
+
+#sub-header h1 {
+  color: #c55642;
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 5.5rem;
+}
+
+#sub-header p {
+  color: #c55642;
+  font-family: "Dancing Script", cursive;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.menu-list a {
+  text-decoration: none;
+  color: #f58f7c;
+}
+.menu-list a:hover {
+  color: #c55642;
+}
+
+.menu-list h3 {
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.safety-measures h4 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 2.5rem;
+}
+
+.safety-measures h3 {
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.cart h3 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.cart h2 {
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.cart p {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.cart a {
+  text-decoration: none;
+  color: #ffffff;
+}
+.menu a:hover {
+  color: #c55642;
+}
+
+#reservation-form {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+}
+
+.btn-lg {
+  background-color: #f58f7c;
+  color: #ffffff;
+}
+
+.btn-lg:hover {
+  background-color: #c55642;
+  color: #ffffff;
+}
