@@ -1,5 +1,12 @@
+<?php 
+include "pdo.php";
+include "utils.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -56,7 +63,7 @@
             <a href="about.html" class="nav-link">ABOUT</a>
           </li>
           <li class="nav-item">
-            <a href="menu.php" class="nav-link">MENU</a>
+            <a href="menu.html" class="nav-link">MENU</a>
           </li>
           <li class="nav-item">
             <a href="reservation.html" class="nav-link">RESERVATION</a>
@@ -64,92 +71,80 @@
           <li class="nav-item">
             <a href="covid19.html" class="nav-link">SAFETY MEASURES</a>
           </li>
+          <li class="nav-item">
+            <a href="cart.html" class="nav-link"> CART <span></span> </a>
+          </li>
         </ul>
       </div>
     </nav>
     <!-- Header -->
     <section class="fluid-container px-0">
-      <div id="header" class="row justify-content-center align-items-center">
+      <div
+        id="sub-header"
+        class="row justify-content-center align-items-center"
+      >
         <div class="col-12 text-center">
-          <h1 class="display-3">La Mesa</h1>
-          <p class="lead">The One Stop For Your Cravings!</p>
+          <h1 class="display-3">Menu</h1>
         </div>
       </div>
     </section>
-    <!-- Covid Introduction -->
+    <!-- Cuisine List -->
     <section>
-      <div class="row justify-content-center align-items-center covid-info">
-        <div class="col-md-6 order-2 order-md-1">
-          <img src="images/covid_safety.jpg" alt="" class="img-fluid" />
-        </div>
-        <div class="col-md-6 text-center order-1 order-md-2 my-5 my-md-0">
-          <div class="row justify-content-center">
-            <div class="col-10 col-lg-8">
-              <p class="lead">
-                We're delighted to be opening and welcoming guests once again
-                but please note that we've introduced a few new processes with
-                you and our wonderful team in mind.
-                <a href="#">Click here</a> to find out more about the changes
-                and what we're doing to keep you safe.
-              </p>
-            </div>
+      <div class="container">
+        <div class="menu-list row text-center pt-3">
+          <div class="col-12 col-md-2">
+            <h3><a href="#american">American</a></h3>
+          </div>
+          <div class="col-12 col-md-2">
+            <h3><a href="#chinese">Chinese</a></h3>
+          </div>
+          <div class="col-12 col-md-2">
+            <h3><a href="#indian">Indian</a></h3>
+          </div>
+          <div class="col-12 col-md-2">
+            <h3><a href="#italian">Italian</a></h3>
+          </div>
+          <div class="col-12 col-md-2">
+            <h3><a href="#korean">Korean</a></h3>
+          </div>
+          <div class="col-12 col-md-2">
+            <h3><a href="#mexican">Mexican</a></h3>
           </div>
         </div>
       </div>
     </section>
-    <!-- About -->
-    <section id="about">
-      <div class="row justify-content-center align-items-center">
-        <div class="col-10 col-md-6 my-5 text-center">
-          <h2>About Us</h2>
-          <p class="lead">
-            Located on a vibrant pedestrianised market street, restaurant is a
-            bright and airy space with glazed frontage on two sides and an
-            outside terrace on the market. Serving our signature well-travelled
-            breakfast and all day food and drinks menus, our style is open,
-            relaxed and friendly. Come down for a coffee with the morning paper,
-            a cocktail and small plates in the evening and anything in between!
-          </p>
+    <!-- Menu -->
+    <section id="menu" class="container">
+      <!-- Introductory Menu-->
+      <div id="intro-items">
+        <div class="menu-list text-center py-5">
+          <h3>Brunch</h3>
         </div>
+        
+        <?php 
+        menuItems('Brunch');
+        ?> 
+        
       </div>
-      <div class="row align-items-center mb-5">
-        <div class="col-md-6 text-center">
-          <div class="row justify-content-center">
-            <div class="col-10 col-lg-8 mb-5 mb-md-0">
-              <h2>Our People</h2>
-              <p class="lead">
-                El Bistro is a place for family, the one you’re born into and
-                the one you create around food, love and friendship. Our
-                attentive staff ensures that your entire dining experience with
-                us is stellar from beginning to end.
-              </p>
-            </div>
-          </div>
+      <!-- American Cuisine-->
+      <div id="american">
+        <div class="menu-list text-center py-5">
+          <h3>American</h3>
         </div>
-        <div class="col-md-6">
-          <img src="images/about1.jpg" alt="" class="img-fluid" />
-        </div>
+       
+        <?php 
+        menuItems('American');
+        ?> 
       </div>
-      <div class="row justify-content-center align-items-center">
-        <div class="col-md-6 order-2 order-md-1">
-          <img src="images/about2.jpg" alt="" class="img-fluid" />
+      <!-- Mexican Cuisine-->
+      <div id="mexican">
+        <div class="menu-list text-center py-5">
+          <h3>Mexican</h3>
         </div>
-        <div class="col-md-6 text-center order-1 order-md-2 my-5 my-md-0">
-          <div class="row justify-content-center">
-            <div class="col-10 col-lg-8 mb-5 mb-md-0">
-              <h2>Our Food</h2>
-              <p class="lead">
-                Every dish at Restaurant has it's own story from the traditional
-                recipes to modern updates that tell the history of our team, of
-                our cooks and chefs who have left their mark on our kitchen, and
-                our serving staff and managers who have been ambassadors of
-                hospitality. Our menu is never done - we find inspiration all
-                around, in new ingredients, new approaches, and fresh takes on
-                old standards.
-              </p>
-            </div>
-          </div>
-        </div>
+        
+        <?php 
+        menuItems('Mexican');
+        ?> 
       </div>
     </section>
     <!-- Footer -->
@@ -220,10 +215,6 @@
       integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
       crossorigin="anonymous"
     ></script>
-    <script>
-      $(document).ready(function () {
-        localStorage.clear();
-      });
-    </script>
+    <script src="menu.js"></script>
   </body>
 </html>
