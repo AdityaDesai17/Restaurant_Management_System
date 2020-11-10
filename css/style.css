@@ -67,6 +67,11 @@ body {
   background-repeat: no-repeat;
 }
 
+h1.modal-title {
+  color: #c55642;
+  font-family: "Dancing Script", cursive;
+}
+
 #header h1 {
   color: #c55642;
   font-family: "Dancing Script", cursive;

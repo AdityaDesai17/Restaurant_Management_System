@@ -1,86 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <button type="submit" id="btn">Just A button</button>
-    <div class="test"></div>
+    <div class="container">
+      <h2>Modal Scroll Example</h2>
+      <p>
+        Use the .modal-dialog-scrollable class to enable scrolling inside the
+        modal.
+      </p>
+      <!-- Button to Open the Modal -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#myModal"
+      >
+        Open modal
+      </button>
+
+      <!-- The Modal -->
+      <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h1 class="modal-title">Your Order</h1>
+              <button type="button" class="close" data-dismiss="modal">
+                ×
+              </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body"></div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <label for="paymentType">Pay By:</label>
+              <select class="payType" name="paylist">
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="Credit/Debit Card">Credit/Debit Card</option>
+                <option value="UPI">UPI</option>
+              </select>
+              <label for="orderType">Order Type:</label>
+              <select class="orderType" name="orderlist">
+                <option value="Delivery">Delivery</option>
+                <option value="Takeaway">Takeaway</option>
+                <option value="Dine in">Dine in</option>
+              </select>
+              <button type="button" id="checkout" class="btn btn-danger">
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
-  <script
-    src="https://code.jquery.com/jquery-3.5.1.js"
-    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    crossorigin="anonymous"
-  ></script>
-
   <script>
-    var cart = [];
-    var cost1;
-    for (var i = 0; i < localStorage.length; i++) {
-      console.log(localStorage.key(i));
+    var modalCost1;
+    var modalCart = [];
+    var itemCart = [];
+    var itemNo = [];
+    var modalTotal;
+    var selectedOrderType;
+    var selectedPayType;
+    var modalSum;
 
-      $(".test").append(
+    function modalReload() {
+      $(".modal-body").empty();
+      $(".modal-body").html(
         '<div class="row py-3 text-center">\
-    <div class="col-4">\
-      <p>' +
-          localStorage.key(i) +
-          '</p>\
-    </div>\
-    <div class="col-4">\
-      <input type="hidden" name="itemName" value="' +
-          localStorage.key(i) +
-          '">\
-      <button class="btn" onclick="minus($(this).parent())" >-</button>\
-      <input type="text"  class="btn" id="count' +
-          i +
-          '" size="1" value="' +
-          localStorage.getItem(localStorage.key(i)) +
-          '" >\
-      <button class="btn" onclick="plus($(this).parent())" >+</button>\
-    </div>\
-    <div class="col-4">\
-      <p id="cost' +
-          i +
-          '" ></p>\
-    </div>\
-    </div>'
+<div class="col-4">\
+  <h3>Item</h3>\
+</div>\
+<div class="col-4">\
+  <h3>Quantity</h3>\
+</div>\
+<div class="col-4">\
+  <h3>Cost</h3>\
+</div>\
+</div>'
       );
-      $.ajaxSetup({ async: false });
-      $.post(
-        "test2.php",
-        {
-          itemName: localStorage.key(i),
-        },
-        function (data) {
-          cost = Number(data);
-          cost1 = i;
-          //console.log(cost1);
-          //console.log("Final Cost " + cost);
-          finalcost = localStorage.getItem(localStorage.key(cost1)) * cost;
-          // console.log(finalcost);
-          document.getElementById("cost" + cost1).innerHTML = finalcost;
-          cart.push(finalcost);
-          console.log(cart);
-          var sum = 0;
-          for (var x = 0; x < cart.length; x++) {
-            sum = sum + cart[x];
+
+      for (var i = 0; i < localStorage.length; i++) {
+        itemCart.push(localStorage.key(i));
+        itemNo.push(localStorage.getItem(localStorage.key(i)));
+        //console.log(itemCart);
+        $(".modal-body").append(
+          '<div class="row py-3 text-center">\
+              <div class="col-4">\
+                 <p>' +
+            localStorage.key(i) +
+            '</p>\
+              </div>\
+            <div class="col-4">\
+                <input type="hidden" name="itemName" value="' +
+            localStorage.key(i) +
+            '">\
+                <input type="text"  class="btn" id="count' +
+            i +
+            '" size="1" value="' +
+            localStorage.getItem(localStorage.key(i)) +
+            '" disabled>\
+            </div>\
+            <div class="col-4">\
+              <p id="cost' +
+            i +
+            '" ></p>\
+            </div>\
+            </div>'
+        );
+        $.ajaxSetup({ async: false });
+        $.post(
+          "test2.php",
+          {
+            itemName: localStorage.key(i),
+          },
+          function (data) {
+            cost = Number(data);
+            modalCost1 = i;
+
+            finalcost =
+              localStorage.getItem(localStorage.key(modalCost1)) * cost;
+
+            document.getElementById("cost" + modalCost1).innerHTML = finalcost;
+            modalCart.push(finalcost);
+            console.log(modalCart);
+            modalSum = 0;
+            for (var x = 0; x < modalCart.length; x++) {
+              modalSum = modalSum + modalCart[x];
+            }
+            modalTotal = "Rs. " + modalSum;
           }
-          var tot = "Pay Rs: " + sum;
-          console.log(tot);
-        }
+        );
+      }
+      $(".modal-body").append(
+        '<hr class="solid">\
+        <div class="row py-3 text-center">\
+          <div class="col-4">\
+            <p>Total</p>\
+          </div>\
+          <div class="col-4">\
+            <p></p>\
+          </div>\
+          <div class="col-4">\
+             <p>' +
+          modalTotal +
+          "</p>\
+          </div>\
+        </div>"
       );
     }
+
+    modalReload();
+    //console.log(itemCart);
+    selectedOrderType = $("select.orderType").val();
+    selectedPayType = $("select.payType").val();
+
+    $("select.orderType").change(function () {
+      selectedOrderType = $(this).children("option:selected").val();
+    });
+
+    $("select.payType").change(function () {
+      selectedPayType = $(this).children("option:selected").val();
+    });
+
+    $("#checkout").click(function () {
+      $.post(
+        "checkout.php",
+        {
+          itemCart: itemCart,
+          itemNo: itemNo,
+          selectedOrderType: selectedOrderType,
+          selectedPayType: selectedPayType,
+          finalTotal: modalSum,
+        },
+        function (data) {
+          console.log(data);
+          window.location.replace("menu.php");
+        }
+      );
+    });
   </script>
 </html>

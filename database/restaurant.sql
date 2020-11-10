@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2020 at 06:21 AM
+-- Generation Time: Nov 10, 2020 at 01:01 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -40,8 +40,14 @@ CREATE TABLE `bill` (
 --
 
 INSERT INTO `bill` (`bill_id`, `customer_id`, `bill_amount`, `payment_method`, `orders_id`) VALUES
-(1, 1, 150, 'Online', 1),
-(2, 1, 75, 'in person', 2);
+(8, 5, 175, 'Cash on Delivery', 15),
+(9, 5, 125, 'Cash on Delivery', 16),
+(10, 5, 175, 'Cash on Delivery', 17),
+(11, 5, 255, 'UPI', 18),
+(12, 5, 100, 'Cash on Delivery', 19),
+(13, 5, 150, 'Cash on Delivery', 20),
+(14, 5, 150, 'Cash on Delivery', 21),
+(15, 5, 300, 'Credit/Debit Card', 22);
 
 -- --------------------------------------------------------
 
@@ -137,7 +143,23 @@ INSERT INTO `orders` (`orders_id`, `order_type`, `customer_id`, `item_count`) VA
 (1, 'Online', 1, 2),
 (2, 'Reservation', 1, 1),
 (5, 'online', 5, 2),
-(6, 'reservation', 4, 2);
+(6, 'reservation', 4, 2),
+(7, 'Takeaway', 5, 3),
+(8, 'Dine in', 5, 3),
+(9, 'Delivery', 5, 3),
+(10, 'Takeaway', 5, 2),
+(11, 'Delivery', 5, 2),
+(12, 'Delivery', 5, 2),
+(13, 'Delivery', 5, 1),
+(14, 'Takeaway', 5, 2),
+(15, 'Delivery', 5, 2),
+(16, 'Delivery', 5, 2),
+(17, 'Delivery', 5, 2),
+(18, 'Takeaway', 5, 1),
+(19, 'Delivery', 5, 1),
+(20, 'Delivery', 5, 1),
+(21, 'Delivery', 5, 1),
+(22, 'Dine in', 5, 2);
 
 -- --------------------------------------------------------
 
@@ -152,6 +174,39 @@ CREATE TABLE `orders_item` (
   `price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `orders_item`
+--
+
+INSERT INTO `orders_item` (`orders_id`, `item_id`, `quantity`, `price`) VALUES
+(8, 5, 1, 75),
+(8, 6, 1, 75),
+(8, 9, 2, 70),
+(9, 5, 1, 75),
+(9, 8, 1, 50),
+(9, 12, 3, 130),
+(10, 12, 2, 130),
+(10, 13, 1, 135),
+(11, 11, 1, 150),
+(11, 13, 1, 135),
+(12, 11, 1, 150),
+(12, 13, 1, 135),
+(13, 7, 3, 85),
+(14, 9, 1, 70),
+(14, 12, 2, 130),
+(15, 6, 1, 75),
+(15, 8, 2, 50),
+(16, 5, 1, 75),
+(16, 8, 1, 50),
+(17, 5, 1, 75),
+(17, 8, 2, 50),
+(18, 7, 3, 85),
+(19, 8, 2, 50),
+(20, 5, 2, 75),
+(21, 5, 2, 75),
+(22, 14, 1, 150),
+(22, 15, 1, 150);
+
 -- --------------------------------------------------------
 
 --
@@ -162,16 +217,24 @@ CREATE TABLE `reservations` (
   `reservations_id` int(11) NOT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `member_count` int(11) DEFAULT NULL,
-  `arrival_time` time DEFAULT NULL,
-  `exit_time` time DEFAULT NULL
+  `arrival_time` varchar(10) DEFAULT NULL,
+  `date` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`reservations_id`, `customer_id`, `member_count`, `arrival_time`, `exit_time`) VALUES
-(1, 1, 2, NULL, NULL);
+INSERT INTO `reservations` (`reservations_id`, `customer_id`, `member_count`, `arrival_time`, `date`) VALUES
+(3, 5, 3, '11:00 AM', '11/11/2020'),
+(4, 5, 3, '11:00 AM', '11/11/2020'),
+(5, 5, 3, '11:00 AM', '11/11/2020'),
+(6, 5, 3, '11:00 AM', '11/11/2020'),
+(7, 5, 3, '11:00 AM', '11/11/2020'),
+(8, 5, 3, '11:00 AM', '11/11/2020'),
+(9, 5, 3, '06:30 PM', '11/09/2020'),
+(13, 5, 1, '11:00 AM', '11/11/2020'),
+(14, 5, 3, '08:30 PM', '11/09/2020');
 
 --
 -- Indexes for dumped tables
@@ -218,7 +281,7 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `orders_item`
   ADD PRIMARY KEY (`orders_id`,`item_id`),
-  ADD KEY `orderitem_ibfk_2` (`item_id`);
+  ADD KEY `orderitem_ibfk_4` (`item_id`);
 
 --
 -- Indexes for table `reservations`
@@ -235,7 +298,7 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT for table `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `cuisine`
@@ -259,13 +322,13 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `orders_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservations_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `reservations_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
@@ -288,8 +351,8 @@ ALTER TABLE `orders`
 -- Constraints for table `orders_item`
 --
 ALTER TABLE `orders_item`
-  ADD CONSTRAINT `orderitem_ibfk_1` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`orders_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderitem_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `	orderitem_ibfk_3` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`orders_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderitem_ibfk_4` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reservations`

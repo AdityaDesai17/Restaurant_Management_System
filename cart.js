@@ -38,7 +38,7 @@ function reload() {
         i +
         '" size="1" value="' +
         localStorage.getItem(localStorage.key(i)) +
-        '" >\
+        '" disabled>\
       <button class="btn" onclick="plus($(this).parent())" >+</button>\
     </div>\
     <div class="col-4">\
@@ -69,7 +69,9 @@ function reload() {
           sum = sum + cart[x];
         }
         var tot = "Pay Rs: " + sum;
-        console.log(tot);
+        //console.log(tot);
+        var costBtn = document.getElementById("TotalCost");
+        costBtn.style.display = "inline-block";
         document.getElementById("TotalCost").innerHTML = tot;
       }
     );
@@ -110,12 +112,16 @@ function minus(clicked) {
 
 function clearAll() {
   localStorage.clear();
+  var costBtn = document.getElementById("TotalCost");
+  costBtn.style.display = "none";
   reload();
 }
 
 $(document).ready(function () {
   if (localStorage.length > 0) {
     console.log(" Cart is Available");
+    var costBtn = document.getElementById("TotalCost");
+    costBtn.style.display = "inline-block";
     $(".test").empty();
     $(".test").html(
       '<h3 class="text-center">Your Order</h3>\

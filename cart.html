@@ -35,7 +35,7 @@
                         <a href="menu.php" class="nav-link">MENU</a>
                     </li>
                     <li class="nav-item">
-                        <a href="reservation.html" class="nav-link">RESERVATION</a>
+                        <a href="reservation.php" class="nav-link">RESERVATION</a>
                     </li>
                     <li class="nav-item">
                         <a href="covid19.html" class="nav-link">SAFETY MEASURES</a>
@@ -74,10 +74,11 @@
             </div>
             <div class="row py-3">
                 <div class="col-4 text-center">
-                    <button class="btn py-3 px-5"><a href="menu.html">Add Item</a></button>
+                    <button class="btn py-3 px-5"><a href="menu.php">Add Item</a></button>
                 </div>
                 <div class="col-4 text-center">
-                    <button class="btn py-3 px-5" id = "TotalCost"></button>
+                    <button class="btn py-3 px-5" id = "TotalCost" style="display: none;" data-toggle="modal"
+                    data-target="#myModal"></button>
                 </div>
                 <div class="col-4 text-center">
                     <button class="btn py-3 px-5" onclick="clearAll()">Clear All</button>
@@ -131,6 +132,43 @@
                 </div>
             </div>
             
+            <!-- The Modal -->
+      <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h1 class="modal-title" style=" color: #c55642;font-family: Dancing Script, cursive;">Your Order</h1>
+              <button type="button" class="close" data-dismiss="modal">
+                ×
+              </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body"></div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <label for="paymentType">Pay By:</label>
+              <select class="payType" name="paylist">
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="Credit/Debit Card">Credit/Debit Card</option>
+                <option value="UPI">UPI</option>
+              </select>
+              <label for="orderType">Order Type:</label>
+              <select class="orderType" name="orderlist">
+                <option value="Delivery">Delivery</option>
+                <option value="Takeaway">Takeaway</option>
+                <option value="Dine in">Dine in</option>
+              </select>
+              <button type="button" id="checkout" class="btn btn-danger">
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
         </section>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -143,128 +181,137 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="cart.js"></script>
         <script>
-//         function reload(){
-//             $(".test").empty();
-//             $(".test").html(
-//       '<h3 class="text-center">Your Order</h3>\
-//     <div class="row py-3 text-center">\
-//         <div class="col-4">\
-//             <h3>Item</h3>\
-//         </div>\
-//         <div class="col-4">\
-//             <h3>Quantity</h3>\
-//         </div>\
-//         <div class="col-4">\
-//             <h3>Cost</h3>\
-//         </div>\
-//     </div>'
-//     );
-//             for (var i = 0; i < localStorage.length; i++) {
-//       console.log(localStorage.key(i));
-//       $(".test").append(
-//         '<div class="row py-3 text-center">\
-//         <div class="col-4">\
-//             <p>' +
-//           localStorage.key(i) +
-//           '</p>\
-//         </div>\
-//         <div class="col-4">\
-//             <input type="hidden" name="itemName" value="'+
-//           localStorage.key(i) +'">\
-//             <button class="btn" onclick="minus($(this).parent())" >-</button>\
-//             <input type="text"  class="btn" size="1" value="'+localStorage.getItem(localStorage.key(i))+'" >\
-//             <button class="btn" onclick="plus($(this).parent())" >+</button>\
-//         </div>\
-//         <div class="col-4">\
-//             <p>Rs 270</p>\
-//         </div>\
-//     </div>'
-//       );
-//     }
-//         }
 
+var modalCost1;
+var modalCart = [];
+var itemCart = [];
+var itemNo = [];
+var modalTotal;
+var selectedOrderType;
+var selectedPayType;
+var modalSum;
 
-//         function plus(clicked) {
-//         eleid = clicked;
-//         parenteleid = eleid.parent();
-//         item = $(parenteleid).find( 'input:hidden' ).val();
-//         console.log(item);
-//         count = $(eleid).find("input:text").val();
-//         if (count < 9) {
-//           count++;
-//           localStorage.setItem(item, count);
-//           $(eleid).find("input:text").val(count);
-//         }
-//       }
+function modalReload() {
+  console.log("from modalreload function");
+  $(".modal-body").empty();
+  $(".modal-body").html(
+    '<div class="row py-3 text-center">\
+        <div class="col-4">\
+            <h3>Item</h3>\
+        </div>\
+        <div class="col-4">\
+             <h3>Quantity</h3>\
+        </div>\
+        <div class="col-4">\
+            <h3>Cost</h3>\
+        </div>\
+    </div>'
+  );
 
-//       function minus(clicked) {
-//         eleid = clicked;
-//         parenteleid = eleid.parent();
-//         item = $(parenteleid).find( 'input:hidden' ).val();
-//         console.log(item);
-//         count = $(eleid).find("input:text").val();
+  for (var i = 0; i < localStorage.length; i++) {
+    itemCart.push(localStorage.key(i));
+    itemNo.push(localStorage.getItem(localStorage.key(i)));
+    //console.log(itemCart);
+    $(".modal-body").append(
+      '<div class="row py-3 text-center">\
+              <div class="col-4">\
+                 <p>' +
+        localStorage.key(i) +
+        '</p>\
+              </div>\
+            <div class="col-4">\
+                <input type="hidden" name="itemName" value="' +
+        localStorage.key(i) +
+        '">\
+                <input type="text"  class="btn" id="count' +
+        i +
+        '" size="1" value="' +
+        localStorage.getItem(localStorage.key(i)) +
+        '" disabled>\
+            </div>\
+            <div class="col-4">\
+              <p id="cost' +
+        i +
+        '" ></p>\
+            </div>\
+            </div>'
+    );
+    $.ajaxSetup({ async: false });
+    $.post(
+      "test2.php",
+      {
+        itemName: localStorage.key(i),
+      },
+      function (data) {
+        cost = Number(data);
+        modalCost1 = i;
 
-//         if (count > 1) {
-//           count--;
-//           localStorage.setItem(item, count);
-//           $(eleid).find("input:text").val(count);
-//         } else {
-//         localStorage.removeItem(item);
-//         reload();
-        
-//         }
-//       }
+        finalcost = localStorage.getItem(localStorage.key(modalCost1)) * cost;
 
-//       function clearAll(){
-//         localStorage.clear();
-//         reload();
-//       }
-            
-// $(document).ready(function () {
-//   if (localStorage.length > 0) {
-//     console.log(" Cart is Available");
-//     $(".test").empty();
-//     $(".test").html(
-//       '<h3 class="text-center">Your Order</h3>\
-//     <div class="row py-3 text-center">\
-//         <div class="col-4">\
-//             <h3>Item</h3>\
-//         </div>\
-//         <div class="col-4">\
-//             <h3>Quantity</h3>\
-//         </div>\
-//         <div class="col-4">\
-//             <h3>Cost</h3>\
-//         </div>\
-//     </div>'
-//     );
-//     for (var i = 0; i < localStorage.length; i++) {
-//       console.log(localStorage.key(i));
-//       $(".test").append(
-//         '<div class="row py-3 text-center">\
-//         <div class="col-4">\
-//             <p>' +
-//           localStorage.key(i) +
-//           '</p>\
-//         </div>\
-//         <div class="col-4">\
-//             <input type="hidden" name="itemName" value="'+
-//           localStorage.key(i) +'">\
-//             <button class="btn" onclick="minus($(this).parent())" >-</button>\
-//             <input type="text"  class="btn" size="1" value="'+localStorage.getItem(localStorage.key(i))+'" >\
-//             <button class="btn" onclick="plus($(this).parent())" >+</button>\
-//         </div>\
-//         <div class="col-4">\
-//             <p>Rs 270</p>\
-//         </div>\
-//     </div>'
-//       );
-//     }
-//   } else {
-//     console.log(" Cart is empty");
-//   }
- 
-// });
+        document.getElementById("cost" + modalCost1).innerHTML = finalcost;
+        modalCart.push(finalcost);
+        console.log(modalCart);
+        modalSum = 0;
+        for (var x = 0; x < modalCart.length; x++) {
+          modalSum = modalSum + modalCart[x];
+        }
+        modalTotal = "Rs. " + modalSum;
+      }
+    );
+  }
+  $(".modal-body").append(
+    '<hr class="solid">\
+        <div class="row py-3 text-center">\
+          <div class="col-4">\
+            <p>Total</p>\
+          </div>\
+          <div class="col-4">\
+            <p></p>\
+          </div>\
+          <div class="col-4">\
+             <p>' +
+      modalTotal +
+      "</p>\
+          </div>\
+        </div>"
+  );
+}
+
+$("#TotalCost").click(function () {
+  console.log("btn clicked");
+  modalReload();
+});
+//console.log(itemCart);
+selectedOrderType = $("select.orderType").val();
+selectedPayType = $("select.payType").val();
+
+$("select.orderType").change(function () {
+  selectedOrderType = $(this).children("option:selected").val();
+});
+
+$("select.payType").change(function () {
+  selectedPayType = $(this).children("option:selected").val();
+});
+
+$("#checkout").click(function () {
+  $.post(
+    "checkout.php",
+    {
+      itemCart: itemCart,
+      itemNo: itemNo,
+      selectedOrderType: selectedOrderType,
+      selectedPayType: selectedPayType,
+      finalTotal: modalSum,
+    },
+    function (data) {
+      console.log(data);
+      clearAll();
+      $("#myModal").modal('hide');
+      alert("Your Order has been placed");
+      window.location.replace("index.html");
+    }
+  );
+});
         </script>
     </body>
 </html>

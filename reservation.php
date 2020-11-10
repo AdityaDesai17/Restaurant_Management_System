@@ -1,3 +1,21 @@
+<?php 
+
+require_once "pdo.php";
+
+$customerId = 5;
+$custName = null;
+$custMail = null;
+$custPhone = null;
+if(isset($customerId)){
+  $stmt = $pdo->prepare(" SELECT name ,email ,phone_no FROM customer WHERE customer_id = ? ");
+  $stmt->execute([$customerId]);
+  $cust = $stmt->fetch();
+  $custName = $cust['name'];
+  $custMail = $cust['email'];
+  $custPhone = $cust['phone_no'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -56,7 +74,7 @@
             <a href="about.html" class="nav-link">ABOUT</a>
           </li>
           <li class="nav-item">
-            <a href="menu.html" class="nav-link">MENU</a>
+            <a href="menu.php" class="nav-link">MENU</a>
           </li>
           <li class="nav-item">
             <a href="reservation.html" class="nav-link">RESERVATION</a>
@@ -90,6 +108,7 @@
                   type="text"
                   class="form-control"
                   placeholder="Your Name"
+                  value="<?= $custName?>"
                 />
               </div>
             </div>
@@ -100,6 +119,7 @@
                   type="email"
                   class="form-control"
                   placeholder="Your Email"
+                  value = "<?=$custMail?>"
                 />
               </div>
             </div>
@@ -110,6 +130,7 @@
                   type="text"
                   class="form-control"
                   placeholder="Your Phone No"
+                  value = "<?= $custPhone?>"
                 />
               </div>
             </div>
@@ -132,6 +153,7 @@
                   id="timepicker"
                   class="form-control"
                   placeholder=""
+                  disabled
                 />
               </div>
             </div>
@@ -139,6 +161,7 @@
               <div class="form-group">
                 <label for="">Guests</label>
                 <input
+                  id = "guestNo"
                   type="number"
                   class="form-control"
                   min="1"
@@ -153,6 +176,7 @@
                   type="submit"
                   value="Book a table"
                   class="btn py-3 px-5"
+                  id = "submit"
                 />
               </div>
             </div>
@@ -241,16 +265,75 @@
     <link rel="stylesheet" href="timepicker-1.3.4/jquery.timepicker.css" />
 
     <script>
+      
+      let n;
+      var currentTime;
+      var event = new Date();
+      currentTime = event.toLocaleTimeString([], { timeStyle: "short" });
       $(function () {
         $("#datepicker-11").datepicker({ minDate: 0, maxDate: "+5D" });
       });
 
-      $(function () {
-        $("#timepicker").timepicker({
-          minTime: "9:00am",
-          maxTime: "11:00pm",
-          showDuration: true,
-        });
+      $("#datepicker-11").change(function () {
+        $("#timepicker").removeAttr("disabled");
+      });
+
+      $("#timepicker").timepicker({
+        minTime: "10:00am",
+        maxTime: "11:00pm",
+        showDuration: true,
+        dynamic: false,
+      });
+
+      function isEmpty(val){
+        return (val === undefined || val == null || val.length <= 0) ? true : false;
+      }
+
+      $("#submit").click(function(){
+        var custId ;
+        custId = <?= isset($customerId) ? $customerId : null; ?>
+        //keep it blank
+        console.log("btn clicked");
+        if(custId == null){
+          alert("Customer has not logged in. Please Register/Log In")
+        }
+        else{
+          selectedDate = $("#datepicker-11")
+          .datepicker({ dateFormat: "dd,mm,yy" })
+          .val();
+          currentDate = $.datepicker.formatDate("mm/dd/yy", new Date());
+          selectedTime = $("#timepicker").val();
+          console.log("Selected date:" + selectedDate);
+          console.log("Current date:" + currentDate);
+          console.log("Selected Time:" + selectedTime);
+          guestCount = $("#guestNo").val();
+          console.log("Guest Count: "+guestCount);
+          if(isEmpty(selectedDate) || isEmpty(selectedTime) || isEmpty(guestCount)){
+            alert(" Fill all the fields.");
+          }
+          else{
+            $.post("booking.php",
+              {
+                cid: custId,
+                selectedDate: selectedDate,
+                selectedTime: selectedTime,
+                currentDate: currentDate,
+                currentTime: currentTime,
+                guestCount: guestCount
+              },
+              function (data) {
+                alert(data);
+                confirm = "Your reservation is confirmed.";
+                if(data === confirm){
+                window.location.replace("index.html");
+                }
+              }
+            );
+          }
+        }
+
+
+       
       });
     </script>
   </body>
