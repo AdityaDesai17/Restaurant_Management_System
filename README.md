@@ -1,6 +1,6 @@
-# Project Title
+# Restaurant Management System
 
-Restaurant Management System
+
 
 ## Description
 
